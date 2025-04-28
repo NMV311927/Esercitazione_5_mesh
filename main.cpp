@@ -64,11 +64,38 @@ int main()
 
     // Markers check
 
+    cout << endl << "Markers Check" << endl << "(If marker not printed then zero)" << endl;
+    cout << "MarkerCell0Ds: " << endl;
+    for(const auto& pair: mesh.MarkerCell0Ds){
+        cout << pair.first << ": ";
+        for(const auto& value : pair.second){
+            cout << value << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
     
+    cout << "MarkerCell1Ds: " << endl;
+    for(const auto& pair: mesh.MarkerCell1Ds){
+        cout << pair.first << ": ";
+        for(const auto& value : pair.second){
+            cout << value << " "; 
+        }
+        cout << endl;
+
+    }
+    cout << endl;
 
 
-
-
+    cout << "MarkerCell2Ds: " << endl;
+    for(const auto& pair: mesh.MarkerCell2Ds){
+        cout << pair.first << ": ";
+        for(const auto& value : pair.second){
+            cout << value << " ";
+        }
+        cout << endl;
+    }
+    cout << "(Correct if none printed as all should be zero)" << endl;
 
 
     // Edge length check
