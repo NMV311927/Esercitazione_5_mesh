@@ -29,7 +29,6 @@ bool ImportCell0Ds(PolygonalMesh& mesh)
         return false;
 
     list<string> listLines;
-
     string line;
     while (getline(file, line))
         listLines.push_back(line);
@@ -71,8 +70,11 @@ bool ImportCell0Ds(PolygonalMesh& mesh)
         getline(converter, token, ';');
         coord(1) = std::stod(token);
     
-        mesh.Cell0DsCoordinates.col(id) = coord;
+        mesh.Cell0DsCoordinates(0,id) = coord(0);
+        mesh.Cell0DsCoordinates(1,id) = coord(1);
 
+
+        
         mesh.Cell0DsId.push_back(id);
 
         /// Memorizza i marker
@@ -206,38 +208,50 @@ bool ImportCell2Ds(PolygonalMesh& mesh)
         unsigned int marker;
         unsigned int numV;
         unsigned int numE;
-        string token;
 
-        getline(converter, token, ';');
-        id = std::stoul(token);
+        converter >> id;
+        converter.ignore(1, ';');
+        converter >> marker;
+        converter.ignore(1, ';');
+        converter >> numV;
+        converter.ignore(1, ';');
 
-        getline(converter, token, ';');
-        marker = std::stoul(token);
-
-        getline(converter, token, ';');
-        numV = std::stoul(token);
-
-        unsigned int *vertices = new unsigned int[numV];
+        vector<unsigned int> vertices(numV);
 
         for(unsigned int i = 0; i < numV; i++){
             converter >> vertices[i];
+            converter.ignore(1, ';');
         }
 
-        getline(converter, token, ';');
-        numE = std::stoul(token);
+        converter >> numE;
+        converter.ignore(1, ';');
 
-        unsigned int *edges = new unsigned int[numE];
+        vector<unsigned int> edges(numE);
 
         for(unsigned int i = 0; i < numE; i++){
             converter >> edges[i];
+            converter.ignore(1, ';');
         }
 
         mesh.Cell2DsId.push_back(id);
         mesh.Cell2DsVertices.push_back(vertices);
         mesh.Cell2DsEdges.push_back(edges);
-
-        delete [] edges;
-        delete [] vertices;
+        
+    
+    /// Memorizza i marker
+    if(marker != 0)
+    {
+        const auto it = mesh.MarkerCell2Ds.find(marker);
+        if(it == mesh.MarkerCell2Ds.end())
+        {
+            mesh.MarkerCell2Ds.insert({marker, {id}});
+        }
+        else
+        {
+            // mesh.MarkerCell2Ds[marker].push_back(id);
+            it->second.push_back(id);
+        }
+    }
     }
 
     return true;

@@ -21,11 +21,13 @@ struct PolygonalMesh
 
     Eigen::MatrixXd Cell0DsCoordinates;
     Eigen::MatrixXi Cell1DsExtrema;
-    vector<unsigned int*> Cell2DsVertices;
-    vector<unsigned int*> Cell2DsEdges;
+    vector<vector<unsigned int>> Cell2DsVertices;
+    vector<vector<unsigned int>> Cell2DsEdges;
 
     std::map<unsigned int, list<unsigned int>> MarkerCell0Ds = {};
     std::map<unsigned int, list<unsigned int>> MarkerCell1Ds = {};
+    std::map<unsigned int, list<unsigned int>> MarkerCell2Ds = {};
+
 };
 
 }
